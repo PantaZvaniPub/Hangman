@@ -1,6 +1,4 @@
 
-Koliko reci ima
-Koliko slova prva rec,druga itd.
 Napravi guess ... .. .... ... .
 
 Lista filmova
