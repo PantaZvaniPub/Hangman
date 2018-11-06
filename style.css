@@ -10,6 +10,14 @@ h1 {
   float: left;
 }
 
+.letterG {
+  height: 100px;
+  width: 100px;
+  border: 2px solid blue;
+  background-color: lightgreen;
+  float: left;
+}
+
 .space {
   height: 100px;
   width: 100px;
