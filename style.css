@@ -1,25 +1,71 @@
+body {
+  background: rgb(5,33,210);
+  background: linear-gradient(148deg, rgba(5,33,210,1) 0%, rgba(15,8,52,1) 49%, rgba(2,0,36,1) 100%);
+  margin: 0px;
+}
+
+html, body {
+  height: 100%;
+  overflow: auto;
+
+}
+
 h1 {
-  background-color: pink;
+  text-align: center;
+  color: white;
+}
+
+#misteryMovie {
+  width: 80%;
+  margin: 30px auto 30px auto;
+  align-self: center;
 }
 
 .letter {
-  height: 100px;
-  width: 100px;
-  border: 2px solid blue;
-  background-color: pink;
-  float: left;
+  height: 60px;
+  width: 60px;
+  border: 2px solid #333333;
+  background-color: #aaaaaa ;
+  font-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow:hidden;
 }
 
 .letterG {
-  height: 100px;
-  width: 100px;
-  border: 2px solid blue;
-  background-color: lightgreen;
-  float: left;
+  height: 60px;
+  width: 60px;
+  border: 2px solid #11381b;
+  background-color: #499b3e;
+  font-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow:hidden;
 }
 
 .space {
-  height: 100px;
+  height: 60px;
+  width: 60px;
+  height: 60px;
+  width: 60px;
+  font-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow:hidden;
+}
+
+.button {
+  display: block;
+  margin: auto;
+  margin-bottom: 15px;
+  background-color: black;
+  color: white;
+  border: 1px solid gray;
   width: 100px;
-  float: left;
+  height: 30px;
 }

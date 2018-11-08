@@ -1,77 +1,111 @@
+"use strict";
+
 console.log("JS connected");
-console.log(movies[456]);
+console.log(movies2[456]);
+/////-----------------------------
+
+////////////////////////////
 
 var misteryMovie = "";
 var bestLetter = "";
 var currentLetter = "";
 var moviesWithBestLetter = 0;
 var moviesWithCurrentLetter = 0;
-var potentialMovies = 0;
+var potentialMovies = [];
 var bestLetterPositions = [];
 var goButton = document.querySelector("#goButton");
 var go = false;
 var letterText = "";
 var letters = [];
+var movies = [];
+var gameTitle = "THE HANGMAN";
 
-function populateLetters() {
-  for (i= 97; i <  123; i++){
-    letters.push(String.fromCharCode(i));
-  };
-};
-populateLetters();
+//uppercase movies
+for(let i=0; i<movies2.length; i++){
+  var mov = movies2[i].toUpperCase();
+movies.push(mov);
+}
 
-gameStart()
-function gameStart() {
-  misteryMovie = prompt("Enter the mistery movie title using stars for letters, except for special caracters, numbers etc. \n example\:\"Ca$h no.2\" \n enter\:      \"**$* **.2\"");
-  potentialMovies = movies;
-  var x = 0;
-  var z = misteryMovie.length;
-  while(x < potentialMovies.length){
-    if(z !== potentialMovies[x].length){
-      potentialMovies.splice(x,1);
-    } else { x++};
-  };
-};
-
-//making letters on html
-for(y=0; y < misteryMovie.length; y++){
-  if(misteryMovie[y] === " "){
-    letterText= letterText + "<div class=\"space\" id=\"" + y + "\"> </div>";
+//make game title on the start
+for(let i=0; i < gameTitle.length; i++){
+  if(gameTitle[i] === " "){
+    letterText= letterText + "<div class=\"space\" id=\"" + i + "\"> </div>";
   } else {
-    letterText= letterText + "<div class=\"letter\" id=\"" + y + "\">*</div>";
+    letterText= letterText + "<div class=\"letterG\" id=\"" + i + "\">" + gameTitle[i] + "</div>";
   };
 };
 document.querySelector("#misteryMovie").innerHTML= letterText;
 
-function fillOutSpots() {
-  letterText = "";
-  for(spot=0; spot=misteryMovie.length; spot++){
-    if(misteryMovie[y] === " "){
-      letterText= letterText + "<div class=\"space\" id=\"" + y + "\"> </div>";
+function gameStart() {
+  //reset of Values
+  letters = [];
+  // populate letters
+  for (let i= 65; i <  91; i++){
+    letters.push(String.fromCharCode(i));
+  };
+  potentialMovies = movies.slice(0);
+  misteryMovie = prompt("Enter the mistery movie title using stars for letters, except for special caracters, numbers etc. \n example\:\"Ca$h no.2\" \n enter\:      \"**$* **.2\"");
+
+  //making letters on html
+  letterText= "";
+  for(let i=0; i < misteryMovie.length; i++){
+    if(misteryMovie[i] === " "){
+      letterText= letterText + "<div class=\"space\" id=\"" + i + "\"> </div>";
+    } else if(misteryMovie[i] === "*"){
+      letterText= letterText + "<div class=\"letter\" id=\"" + i + "\"> </div>";
     } else {
-      letterText= letterText + "<div class=\"letterG\" id=\"" + y + "\">"+ misteryMovie(spot) +"</div>";
+      letterText= letterText + "<div class=\"letterG\" id=\"" + i + "\">" + misteryMovie[i] + "</div>";
     };
+  };
+  document.querySelector("#misteryMovie").innerHTML= letterText;
+
+  //reducing to movies of the right length
+  var x= misteryMovie.length;
+  for(let i=potentialMovies.length -1; i>-1; i--){
+    if(x !== potentialMovies[i].length){
+      potentialMovies.splice(i,1);
   }
 }
 
+  //dodaje da se na klik menja * u bestLetter i dodaje u bestLetterPositions
+  var lett = document.querySelectorAll(".letter")
+  for(let i=0; i<lett.length; i++){
+    lett[i].addEventListener("click", function() {
+      if (this.textContent === " "){
+        this.textContent = bestLetter;
+        bestLetterPositions.push(Number(this.id));
+        this.classList.add("letterG");
+        this.classList.remove("letter");
+      } else if(this.textContent === bestLetter){
+        this.textContent = " ";
+        bestLetterPositions.splice(bestLetterPositions.indexOf(Number(this.id)),1);
+        this.classList.add("letter");
+        this.classList.remove("letterG");
+      };
+    });
+  };
+  //first cycle
+  bestLetterFinder()
+  alert ( "Click on all positions with the letter: \n" + bestLetter + "\nand click GO in the end")
+};
 
-//dodaje da se na klik menja * u bestLetter i dodaje u bestLetterPositions
-var lett = document.querySelectorAll(".letter")
-for( u=0; u<misteryMovie.length; u++){
-  lett[u].addEventListener("click", function() {
-    if (this.textContent === "*"){
-      this.textContent = bestLetter;
-      bestLetterPositions.push(Number(this.id));
-      this.classList.add("letterG");
-      this.classList.remove("letter");
-    } else if(this.textContent === bestLetter){
-      this.textContent = "*";
-      bestLetterPositions.splice(bestLetterPositions.indexOf(Number(this.id)),1);
-      this.classList.add("letter");
-      this.classList.remove("letterG");
+
+
+
+function fillOutSpots() {
+  letterText = "";
+  for(spot=0; spot<misteryMovie.length; spot++){
+    if(misteryMovie[spot] === " "){
+      letterText= letterText + "<div class=\"space\" id=\"" + spot + "\"> </div>";
+    } else {
+      letterText= letterText + "<div class=\"letterG\" id=\"" + spot + "\">"+ misteryMovie[spot] +"</div>";
     };
-  });
+  }
+  document.querySelector("#misteryMovie").innerHTML= letterText;
 }
+
+
+
 
 //ako ubacim jquery moze ovako
 // $(".letter").on("click", function() {this.textContent = "aa"});
@@ -79,6 +113,7 @@ for( u=0; u<misteryMovie.length; u++){
 // Basic game guessing function
   function game(){
     checkLetters()
+    if(potentialMovies.length === 0){return;}
     bestLetterFinder()
     if (misteryMovie.indexOf("*") !== -1){
     alert ( "Click on all positions with the letter: \n" + bestLetter + "\nand click GO in the end")
@@ -91,10 +126,10 @@ function bestLetterFinder() {
   moviesWithBestLetter = 0;
   bestLetterPositions = [];
   //cycling through the letters
-  for (a = 0; a < letters.length; a++){
+  for (let a = 0; a < letters.length; a++){
     currentLetter = letters[a];
     //cycling through the movies to check if they have the letter
-    for(b = 0; b < potentialMovies.length; b++){
+    for(let b = 0; b < potentialMovies.length; b++){
       if( potentialMovies[b].indexOf(letters[a]) != -1){
         moviesWithCurrentLetter = moviesWithCurrentLetter + 1;
       };
@@ -111,8 +146,7 @@ function bestLetterFinder() {
   letters.splice(letters.indexOf(bestLetter), 1);
 };
 
-bestLetterFinder()
-alert ( "Click on all positions with the letter: \n" + bestLetter + "\nand click GO in the end")
+
 
 //
 function checkLetters(){
@@ -123,34 +157,30 @@ function checkLetters(){
       if(potentialMovies[c].indexOf(bestLetter) !== -1){
         potentialMovies.splice(c,1);
       } else {c++}
-      if( potentialMovies.length == 1){
-        alert("the movie is: " + potentialMovies[0] + " , that is a good movie! Reset the page to play again" );
-        misteryMovie = potentialMovies[0];
-        fillOutSpots();
-        return ;
-      };
     };
   } else {
     //if the misteryMovie does have the letter
     //change the stars
-    for(d=0; d< bestLetterPositions.length; d++){
-      misteryMovie = misteryMovie.substr(0,bestLetterPositions[d]) + bestLetter + misteryMovie.substr(bestLetterPositions[d]+1);
+    for(let i=0; i< bestLetterPositions.length; i++){
+      misteryMovie = misteryMovie.substr(0,bestLetterPositions[i]) + bestLetter + misteryMovie.substr(bestLetterPositions[i]+1);
       console.log(misteryMovie);
     };
     //remove movies that don't have the guessed letter in the right places
-    for(e=0; e<bestLetterPositions.length; e++){
+    for(let i=0; i<bestLetterPositions.length; i++){
       var f=0
       while(f<potentialMovies.length){
-        if(potentialMovies[f][bestLetterPositions[e]] !== bestLetter){
+        if(potentialMovies[f][bestLetterPositions[i]] !== bestLetter){
           potentialMovies.splice(f,1);
         } else {f++};
       };
     };
     if( potentialMovies.length === 1 || misteryMovie.indexOf("*") === -1){
       misteryMovie = potentialMovies[0];
-      alert("the movie is: " + potentialMovies[0] + " , that is a good movie! Reset the page to play again" );
+      alert("The movie is: " + potentialMovies[0] + " , that is a good movie! Reset the page to play again" );
       fillOutSpots();
       return ;
+    } else if(potentialMovies.length === 0 ) {
+      alert("I'm sorry, I don't know this movie" );
     };
   };
 }

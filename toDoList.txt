@@ -1,6 +1,3 @@
+Ogranici lomljenje Reci
 
-Napravi guess ... .. .... ... .
-
-Lista filmova
-
-Format koji odgovara provera
+nova baza sa vise filmova
