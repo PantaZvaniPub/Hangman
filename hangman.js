@@ -20,12 +20,6 @@ var letters = [];
 var movies = [];
 var gameTitle = "THE HANGMAN";
 
-//uppercase movies
-for(let i=0; i<movies2.length; i++){
-  var mov = movies2[i].toUpperCase();
-movies.push(mov);
-}
-
 //make game title on the start
 for(let i=0; i < gameTitle.length; i++){
   if(gameTitle[i] === " "){
@@ -43,8 +37,11 @@ function gameStart() {
   for (let i= 65; i <  91; i++){
     letters.push(String.fromCharCode(i));
   };
-  potentialMovies = movies.slice(0);
+
   misteryMovie = prompt("Enter the mistery movie title using stars for letters, except for special caracters, numbers etc. \n example\:\"Ca$h no.2\" \n enter\:      \"**$* **.2\"");
+
+  //pick the db of the right length
+  potentialMovies = eval('movies' + misteryMovie.length).slice(0);
 
   //making letters on html
   letterText= "";
@@ -59,13 +56,7 @@ function gameStart() {
   };
   document.querySelector("#misteryMovie").innerHTML= letterText;
 
-  //reducing to movies of the right length
-  var x= misteryMovie.length;
-  for(let i=potentialMovies.length -1; i>-1; i--){
-    if(x !== potentialMovies[i].length){
-      potentialMovies.splice(i,1);
-  }
-}
+
 
   //dodaje da se na klik menja * u bestLetter i dodaje u bestLetterPositions
   var lett = document.querySelectorAll(".letter")
@@ -89,12 +80,10 @@ function gameStart() {
   alert ( "Click on all positions with the letter: \n" + bestLetter + "\nand click GO in the end")
 };
 
-
-
-
+//when the movie is guessed fill in all the letters on the page
 function fillOutSpots() {
   letterText = "";
-  for(spot=0; spot<misteryMovie.length; spot++){
+  for(let spot=0; spot<misteryMovie.length; spot++){
     if(misteryMovie[spot] === " "){
       letterText= letterText + "<div class=\"space\" id=\"" + spot + "\"> </div>";
     } else {
@@ -105,20 +94,18 @@ function fillOutSpots() {
 }
 
 
-
-
 //ako ubacim jquery moze ovako
 // $(".letter").on("click", function() {this.textContent = "aa"});
 
 // Basic game guessing function
-  function game(){
-    checkLetters()
-    if(potentialMovies.length === 0){return;}
-    bestLetterFinder()
-    if (misteryMovie.indexOf("*") !== -1){
+function game(){
+  checkLetters()
+  if(potentialMovies.length === 0){return;}
+  bestLetterFinder()
+  if (misteryMovie.indexOf("*") !== -1){
     alert ( "Click on all positions with the letter: \n" + bestLetter + "\nand click GO in the end")
   };
-  };
+};
 
 function bestLetterFinder() {
   //reset values
